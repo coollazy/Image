@@ -21,6 +21,9 @@ public struct Image {
     
     public init(data: Data) throws {
         self.data = data
+        guard data.imageFormat != .unknown else {
+            throw ImageError.unsupportedFormat
+        }
         self.format = data.imageFormat
         self.size = data.imageSize
     }

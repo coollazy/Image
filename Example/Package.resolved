@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "image",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/coollazy/Image.git",
+      "state" : {
+        "revision" : "b8965621d83d120202ce461647a673eb52ea3544",
+        "version" : "1.0.0"
+      }
+    }
+  ],
+  "version" : 2
+}

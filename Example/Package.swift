@@ -11,7 +11,8 @@ let package = Package(
         .executable(name: "App", targets: ["App"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/coollazy/Image.git", .upToNextMinor(from: "1.0.0")),
+        .package(path: "../"),
+//        .package(url: "https://github.com/coollazy/Image.git", .upToNextMinor(from: "1.0.0")),
     ],
     targets: [
         .target(

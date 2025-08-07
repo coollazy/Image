@@ -9,7 +9,7 @@ Image Model parser
 - Package.swift 的 dependencies 增加
 
 ```
-.package(name: "Image", url: "https://github.com/coollazy/Image.git", from: "1.0.0"),
+.package(name: "Image", url: "https://github.com/coollazy/Image.git", from: "1.1.0"),
 ```
 
 - target 的 dependencies 增加

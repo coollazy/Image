@@ -38,4 +38,8 @@ print(image.size)
 // 檔案格式 (Unknown, PNG, JPEG, GIF, TIFF, WEBP, HEIC)
 print(image.format)
 
+// 調整圖片尺寸
+let resizeImage = try image.resize(to: .init(width: 50, height: 50))
+print("resizeImage => \(resizeImage)")
+
 ```

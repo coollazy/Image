@@ -198,14 +198,11 @@ RUN convert -version
 # ================================
 FROM swift:5.10-noble AS build
 
-# 安裝 build 依賴
-RUN apt-get update && apt-get install -y imagemagick \
-    && rm -rf /var/lib/apt/lists/*
-
 WORKDIR /build
 
 COPY Package.* ./
-RUN swift package resolve
+RUN swift package resolve \
+    $([ -f ./Package.resolved ] && echo "--force-resolved-versions" || true)
 
 COPY . .
 RUN swift build -c release --static-swift-stdlib
@@ -218,11 +215,12 @@ FROM ubuntu:noble
 # 安裝 runtime 依賴
 RUN apt-get update && apt-get install -y \
       ca-certificates \
-      imagemagick \
+      imagemagick-6.q16 \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 COPY --from=build /build/.build/release/App ./
+COPY --from=build /build/Resources ./Resources
 
 EXPOSE 8080
 CMD ["./App"]

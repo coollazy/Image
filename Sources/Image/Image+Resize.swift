@@ -1,5 +1,4 @@
 import Foundation
-import SwiftCLI
 
 public extension Image {
     @discardableResult

@@ -1,5 +1,10 @@
 # Image
 
+![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux-lightgrey)
+![Swift](https://img.shields.io/badge/Swift-5.9-orange)
+![SPM](https://img.shields.io/badge/SPM-Supported-green)
+[![CI](https://github.com/coollazy/Image/actions/workflows/ci.yml/badge.svg)](https://github.com/coollazy/Image/actions/workflows/ci.yml)
+
 ## 介紹
 
 Image Model parser - 一個用於處理圖片的 Swift 函式庫，提供圖片解析、格式識別和尺寸調整等功能。

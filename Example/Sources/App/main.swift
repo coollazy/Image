@@ -2,10 +2,11 @@ import Foundation
 import Image
 
 do {
+    let imageURL = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
+        .appendingPathComponent("Resources")
+        .appendingPathComponent("image.png")
     
-    let imageURL = URL(fileURLWithPath: "path_to_your_local_image") // 本地圖檔
-//    let imageURL = URL(string: "https://example.com/image.png")! // 遠端圖檔
-    
+    // 載入圖檔
     let image = try Image(url: imageURL)
     print(image)
     
@@ -13,6 +14,12 @@ do {
     let resizeImage = try image.resize(to: .init(width: 50, height: 50))
     print("resizeImage => \(resizeImage)")
     
+    // 圖檔存檔
+    
+    let outputImageURL = FileManager.default.temporaryDirectory
+        .appendingPathComponent("resize-image.png")
+    try resizeImage.data.write(to: outputImageURL)
+    debugPrint("success !!")
 }
 catch {
     print(error.localizedDescription)

@@ -12,7 +12,7 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "../"),
-//        .package(url: "https://github.com/coollazy/Image.git", .upToNextMinor(from: "1.1.0")),
+//        .package(url: "https://github.com/coollazy/Image.git", .upToNextMinor(from: "1.1.1")),
     ],
     targets: [
         .target(

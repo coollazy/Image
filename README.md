@@ -18,7 +18,7 @@ Image Model parser - 一個用於處理圖片的 Swift 函式庫，提供圖片�
 - Package.swift 的 dependencies 增加
 
 ```swift
-.package(name: "Image", url: "https://github.com/coollazy/Image.git", from: "1.1.0"),
+.package(name: "Image", url: "https://github.com/coollazy/Image.git", from: "1.1.1"),
 ```
 
 - target 的 dependencies 增加

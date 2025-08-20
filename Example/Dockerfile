@@ -22,7 +22,7 @@ FROM ubuntu:noble
 # 安裝 runtime 依賴（包含 ImageMagick CLI）
 RUN apt-get update && apt-get install -y \
       ca-certificates \
-      imagemagick-6.q16 \
+      imagemagick \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app

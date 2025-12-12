@@ -4,6 +4,7 @@ import Foundation
 extension Data {
     // 參考 https://github.com/SDWebImage/SDWebImage/blob/master/SDWebImage/Core/NSData%2BImageContentType.m
     var imageFormat: ImageFormat {
+        guard count >= 1 else { return .unknown }
         switch self[0] {
         case 0x89:
             return .png

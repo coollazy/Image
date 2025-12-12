@@ -1,6 +1,10 @@
+/// 支援的圖片格式枚舉。
 public enum ImageFormat {
+    /// 未知或不支援的格式
     case unknown
+    /// Portable Network Graphics (PNG)
     case png
+    /// Joint Photographic Experts Group (JPEG)
     case jpeg
     case gif
     case bmp

@@ -123,7 +123,7 @@ public extension Image {
     ///   - size: 目標尺寸 (`CGSize`)。
     ///   - timeout: 操作的超時時間（秒）。預設為 5 秒。
     /// - Returns: 一個新的 `Image` 實例。
-    public func resize(to size: CGSize, timeout: TimeInterval = 5) async throws -> Self {
+    func resize(to size: CGSize, timeout: TimeInterval = 5) async throws -> Self {
         return try await Task.detached(priority: .userInitiated) {
             return try self.resize(to: size, timeout: timeout)
         }.value

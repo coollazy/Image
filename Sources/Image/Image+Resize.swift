@@ -1,3 +1,4 @@
+#if os(macOS) || os(Linux)
 import Foundation
 
 public extension Image {
@@ -128,7 +129,13 @@ public extension Image {
         }.value
     }
     
+    private static var cachedConvertPath: String?
+
     private func pathForConvert() -> String? {
+        if let path = Self.cachedConvertPath {
+            return path
+        }
+        
         // Docker 容器中優先檢查標準路徑
         let containerPaths = [
             "/usr/bin/convert",             // Ubuntu/Debian 標準路徑 (最常見)
@@ -145,20 +152,24 @@ public extension Image {
         // 合併所有可能的路徑，優先檢查容器環境的路徑
         let allPaths = containerPaths + macOSPaths
         
+        var foundPath: String?
         for path in allPaths {
             if FileManager.default.isExecutableFile(atPath: path) {
-                return path
+                foundPath = path
+                break
             }
         }
         
         // 如果硬編碼路徑找不到，嘗試使用 which 命令動態查找
-        if let whichPath = shell("which convert")?.trimmingCharacters(in: .whitespacesAndNewlines),
+        if foundPath == nil, let whichPath = shell("which convert")?.trimmingCharacters(in: .whitespacesAndNewlines),
            !whichPath.isEmpty,
            FileManager.default.isExecutableFile(atPath: whichPath) {
-            return whichPath
+            foundPath = whichPath
         }
         
-        return nil
+        // Store and return found path
+        Self.cachedConvertPath = foundPath
+        return foundPath
     }
 
     // 輔助函數：執行 shell 命令並返回輸出
@@ -182,3 +193,4 @@ public extension Image {
         }
     }
 }
+#endif

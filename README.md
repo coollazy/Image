@@ -6,8 +6,15 @@
 [![CI](https://github.com/coollazy/Image/actions/workflows/ci.yml/badge.svg)](https://github.com/coollazy/Image/actions/workflows/ci.yml)
 
 ## 介紹
+一個輕量級、跨平台的 Swift 函式庫，專為圖片處理設計。
+它提供純 Swift 的圖片格式識別、尺寸解析功能，並透過底層呼叫 ImageMagick 的 `convert` 工具來實現圖片尺寸調整。
 
-Image Model parser - 一個用於處理圖片的 Swift 函式庫，提供圖片解析、格式識別和尺寸調整等功能。
+## 主要特性
+- ✅ **純 Swift 圖片解析**: 無需外部依賴，即可快速獲取圖片格式與尺寸。
+- ✅ **跨平台支援**: 可在 macOS、Linux 環境下完美運行，並原生支援 Docker 部署。
+- ✅ **彈性的圖片縮放**: 透過 ImageMagick 強大的功能，實現多種尺寸調整需求。
+- ✅ **完整且健壯的測試**: 涵蓋核心功能、邊界情況及錯誤處理，確保代碼品質。
+- ✅ Swift Package Manager 支援。
 
 ## 安裝
 
@@ -50,14 +57,31 @@ print(image.size)
 // 檔案格式 (Unknown, PNG, JPEG, GIF, TIFF, WEBP, HEIC)
 print(image.format)
 
-// 調整圖片尺寸
-let resizeImage = try image.resize(to: .init(width: 50, height: 50))
+// 調整圖片尺寸 (同步 - 預設超時為 5 秒)
+let resizeImage = try image.resize(to: CGSize(width: 50, height: 50))
 print("resizeImage => \(resizeImage)")
+
+// 調整圖片尺寸 (異步 - async/await)
+let asyncResizedImage = try await image.resize(to: CGSize(width: 50, height: 50))
+print("asyncResizedImage => \(asyncResizedImage)")
+
+// 指定超時時間 (例如 30 秒)
+
+let longTimeoutResizeImage = try image.resize(to: CGSize(width: 100, height: 100), timeout: 30)
+
+print("longTimeoutResizeImage => \(longTimeoutResizeImage)")
+
 ```
 
 
 
+> 💡 **更多範例**：查看完整的範例應用程式及 Docker 部署教學，請參考 [Example/README.md](Example/README.md)。
+
+
+
 ## 系統需求
+
+
 
 ### ImageMagick 依賴
 

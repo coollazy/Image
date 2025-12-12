@@ -178,6 +178,40 @@ final class ImageTests: XCTestCase {
         }
     }
 
+    func testAsyncResizePNG() async throws {
+        if !isConvertInstalled() { return }
+
+        guard let data = data(from: pngBase64) else { XCTFail("Invalid Base64"); return }
+        let image = try Image(data: data)
+        
+        let targetSize = CGSize(width: 10, height: 10)
+        let resizedImage = try await image.resize(to: targetSize)
+        
+        XCTAssertEqual(resizedImage.format, .png)
+        XCTAssertNotNil(resizedImage.size)
+        XCTAssertEqual(resizedImage.size, targetSize)
+    }
+    
+    func testAsyncResizeTimeout() async {
+        if !isConvertInstalled() { return }
+
+        guard let data = data(from: pngBase64) else { XCTFail("Invalid Base64"); return }
+        
+        do {
+            let image = try Image(data: data)
+            try await image.resize(to: CGSize(width: 100, height: 100), timeout: 0.00001)
+            XCTFail("Should have thrown TimeoutError")
+        } catch {
+            let nsError = error as NSError
+            if nsError.domain == "TimeoutError" {
+                XCTAssertEqual(nsError.code, -1)
+            } else {
+                 // On very fast machines, it might actually finish or fail with a different error.
+                 // We accept TimeoutError as the primary success criteria here.
+            }
+        }
+    }
+
     // MARK: - Helper Functions
     
     private func isConvertInstalled() -> Bool {

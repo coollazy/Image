@@ -112,6 +112,22 @@ public extension Image {
         }
     }
     
+    /// 使用 ImageMagick 調整圖片大小 (異步版本)。
+    ///
+    /// 此方法透過 `Task.detached` 將同步的縮放操作移至後台執行緒，
+    /// 確保在 Docker/Linux 環境下的穩定性（避免 `terminationHandler` 潛在的掛起問題），
+    /// 同時提供符合現代 Swift Concurrency 的非阻塞 API。
+    ///
+    /// - Parameters:
+    ///   - size: 目標尺寸 (`CGSize`)。
+    ///   - timeout: 操作的超時時間（秒）。預設為 5 秒。
+    /// - Returns: 一個新的 `Image` 實例。
+    public func resize(to size: CGSize, timeout: TimeInterval = 5) async throws -> Self {
+        return try await Task.detached(priority: .userInitiated) {
+            return try self.resize(to: size, timeout: timeout)
+        }.value
+    }
+    
     private func pathForConvert() -> String? {
         // Docker 容器中優先檢查標準路徑
         let containerPaths = [

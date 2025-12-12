@@ -19,6 +19,15 @@ public extension Image {
     ///   - `NSError`: 如果找不到 `convert` 指令或其他系統錯誤。
     @discardableResult
     func resize(to size: CGSize, timeout: TimeInterval = 5) throws -> Self {
+        // Parameter validation
+        guard size.width > 0 && size.height > 0 else {
+            throw NSError(
+                domain: "ImageResizeError",
+                code: 2,
+                userInfo: [NSLocalizedDescriptionKey: "Resize dimensions must be greater than zero. Provided: \(size)"]
+            )
+        }
+
         let semaphore = DispatchSemaphore(value: 0)
         var result: Result<Self, Error>?
         

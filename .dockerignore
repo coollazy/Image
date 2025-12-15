@@ -1,0 +1,12 @@
+# Build artifacts
+.build
+.swiftpm
+Example/.build
+Example/.swiftpm
+
+# Git
+.git
+.gitignore
+
+# OS specific
+.DS_Store

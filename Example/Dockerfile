@@ -3,15 +3,20 @@
 # ================================
 FROM swift:5.10-noble AS build
 
-WORKDIR /build
+WORKDIR /Image
 
-# 先解決 Swift package
-COPY Package.* ./
+# 1. 複製整個專案上下文 (包含 Image 庫源碼和 Example 應用)
+COPY . .
+
+# 2. 切換到 Example 目錄進行構建
+WORKDIR /Image/Example
+
+# 3. 解析依賴並構建
+# 注意：Example/Package.swift 的 path: "../" 會指向 /Image (即 Image 庫源碼)
+# 目錄名稱現在匹配 Package 名稱，解決 SPM 解析問題
 RUN swift package resolve \
     $([ -f ./Package.resolved ] && echo "--force-resolved-versions" || true)
 
-# 複製專案並編譯
-COPY . .
 RUN swift build -c release --static-swift-stdlib
 
 # ================================
@@ -27,9 +32,11 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
-# 複製可執行檔和 Resources
-COPY --from=build /build/.build/release/App ./
-COPY --from=build /build/Resources ./Resources
+# 4. 從 build 階段複製編譯好的執行檔
+# 注意路徑變化：現在是在 /Image/Example/.build/release/App
+COPY --from=build /Image/Example/.build/release/App ./
+# 複製 Resources
+COPY --from=build /Image/Example/Resources ./Resources
 
 EXPOSE 8080
 CMD ["./App"]

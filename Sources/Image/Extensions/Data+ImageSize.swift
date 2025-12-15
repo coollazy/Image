@@ -49,11 +49,34 @@ extension Data {
 
 extension Data {
     func getPNGImageSize() -> CGSize? {
-        // Need at least 24 bytes for PNG IHDR chunk (8 bytes signature + 12 bytes IHDR + 4 bytes CRC)
-        guard count >= 24 else { return nil }
-        let w = Double(self[ImageSizeConstants.pngWidthOffset..<(ImageSizeConstants.pngWidthOffset + 4)].unsafeUInt32.bigEndian)
-        let h = Double(self[ImageSizeConstants.pngHeightOffset..<(ImageSizeConstants.pngHeightOffset + 4)].unsafeUInt32.bigEndian)
-        return CGSize(width: w, height: h)
+        // PNG Signature is 8 bytes.
+        var offset = 8
+        
+        // Loop through chunks
+        while offset + 8 <= count {
+            let length = Int(self[offset..<(offset + 4)].unsafeUInt32.bigEndian)
+            let typeStart = offset + 4
+            
+            // Check for IHDR chunk (0x49484452)
+            if self[typeStart] == 0x49 &&
+               self[typeStart+1] == 0x48 &&
+               self[typeStart+2] == 0x44 &&
+               self[typeStart+3] == 0x52 {
+                
+                let dataStart = offset + 8
+                // IHDR data: Width (4 bytes), Height (4 bytes), ...
+                guard count >= dataStart + 8 else { return nil }
+                
+                let w = Double(self[dataStart..<(dataStart + 4)].unsafeUInt32.bigEndian)
+                let h = Double(self[(dataStart + 4)..<(dataStart + 8)].unsafeUInt32.bigEndian)
+                return CGSize(width: w, height: h)
+            }
+            
+            // Move to next chunk: Length (4) + Type (4) + Data (length) + CRC (4)
+            offset += 8 + length + 4
+        }
+        
+        return nil
     }
 }
 

@@ -73,10 +73,13 @@ public extension Image {
                 result = .success(self)
             }
             else {
+                let errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
+                let errorMessage = String(data: errorData, encoding: .utf8) ?? "Unknown error"
+                
                 let error = NSError(
                     domain: "ImageMagickError",
                     code: Int(process.terminationStatus),
-                    userInfo: [NSLocalizedDescriptionKey: "Convert failed with status \(process.terminationStatus)"]
+                    userInfo: [NSLocalizedDescriptionKey: "Convert failed with status \(process.terminationStatus). Detail: \(errorMessage)"]
                 )
                 result = .failure(error)
             }

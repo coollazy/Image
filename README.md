@@ -25,7 +25,7 @@
 - Package.swift 的 dependencies 增加
 
 ```swift
-.package(name: "Image", url: "https://github.com/coollazy/Image.git", from: "1.2.1"),
+.package(name: "Image", url: "https://github.com/coollazy/Image.git", from: "1.2.2"),
 ```
 
 - target 的 dependencies 增加

@@ -48,10 +48,6 @@ public extension Image {
         // Step 1: Write image data to temp input file
         try data.write(to: inputURL)
         
-        print("convert path: \(convertPath)")
-        print("input file: \(inputURL.path)")
-        print("output file: \(outputURL.path)")
-        
         // Step 2: Use ImageMagick to resize
         let process = Process()
         process.executableURL = URL(fileURLWithPath: convertPath)
